@@ -13,8 +13,14 @@ import static gerenciador.GerenciadorDeMarcas.marcas;
 
 public class GerenciadorDeProdutos {
 
+    public Validacao validador = new Validacao();
+
     public void cadastrarProduto() {
         String nomeMarca = JOptionPane.showInputDialog(null, "Informe a marca do novo produto");
+
+        if (!validador.contemTexto(nomeMarca)) {
+            return;
+        }
 
         if (!marcas.containsKey(nomeMarca)) {
             JOptionPane.showMessageDialog(null, "Essa marca não existe! Cadastre-a primeiro para, então, criar o produto!");
@@ -22,7 +28,18 @@ public class GerenciadorDeProdutos {
         }
 
         String nome = JOptionPane.showInputDialog(null, "Informe o nome do produto que deseja cadastrar");
-        double preco = (Double.parseDouble(JOptionPane.showInputDialog(null, "Informe o preço do produto (apenas números)")));
+
+        if (!validador.contemTexto(nome)) {
+            return;
+        }
+
+        double preco;
+        try {
+            preco = Double.parseDouble(JOptionPane.showInputDialog(null, "Informe o preço do produto (apenas números)"));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Por favor, digite um número!");
+            return;
+        }
 
         Marca marcaDoProduto = marcas.get(nomeMarca);
         if (marcaDoProduto.contemProduto(nome)) {
@@ -31,9 +48,20 @@ public class GerenciadorDeProdutos {
         }
 
         String tipoProduto = JOptionPane.showInputDialog(null, "Informe se o produto é uma comida ou bebida");
+
+        if (!validador.contemTexto(tipoProduto)) {
+            return;
+        }
+
         if (tipoProduto.equalsIgnoreCase("Comida")) {
 
-            Integer peso = (Integer.parseInt(JOptionPane.showInputDialog(null, "Informe o peso do produto em gramas (apenas números)")));
+            int peso;
+            try {
+                peso = Integer.parseInt(JOptionPane.showInputDialog(null, "Informe o peso do produto em gramas (apenas números)"));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Por favor, digite um número!");
+                return;
+            }
 
             Comida produto = new Comida(nome, nomeMarca, preco, peso);
             marcaDoProduto.registrarProduto(produto);
@@ -41,7 +69,13 @@ public class GerenciadorDeProdutos {
 
         } else if (tipoProduto.equalsIgnoreCase("Bebida")) {
 
-            Integer peso = (Integer.parseInt(JOptionPane.showInputDialog(null, "Informe o peso do produto em mililitros (apenas números)")));
+            int peso;
+            try {
+                peso = Integer.parseInt(JOptionPane.showInputDialog(null, "Informe o peso do produto em mililitros (apenas números)"));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Por favor, digite um número!");
+                return;
+            }
 
             Bebida produto = new Bebida(nome, nomeMarca, preco, peso);
             marcaDoProduto.registrarProduto(produto);
@@ -55,6 +89,10 @@ public class GerenciadorDeProdutos {
     public void atualizarProduto() {
         String nomeMarca = JOptionPane.showInputDialog(null, "Informe a marca do produto que deseja atualizar");
 
+        if (!validador.contemTexto(nomeMarca)) {
+            return;
+        }
+
         if (!marcas.containsKey(nomeMarca)) {
             JOptionPane.showMessageDialog(null, "Essa marca não existe!");
             return;
@@ -62,6 +100,10 @@ public class GerenciadorDeProdutos {
         Marca marcaProduto = marcas.get(nomeMarca);
 
         String nomeProduto = JOptionPane.showInputDialog(null, "Informe o nome do produto que deseja atualizar");
+
+        if (!validador.contemTexto(nomeProduto)) {
+            return;
+        }
 
         if (!marcaProduto.contemProduto(nomeProduto)) {
             JOptionPane.showMessageDialog(null, "Esse produto não existe!");
@@ -73,7 +115,14 @@ public class GerenciadorDeProdutos {
         for (Produto produto : produtosDaMarca) {
             if (produto.getNome().equalsIgnoreCase(nomeProduto)) {
 
-                double preco = (Double.parseDouble(JOptionPane.showInputDialog(null, "Informe o novo preço do produto (apenas números)")));
+                double preco;
+                try {
+                    preco = Double.parseDouble(JOptionPane.showInputDialog(null, "Informe o novo preço do produto (apenas números)"));
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Por favor, digite um número!");
+                    return;
+                }
+
                 produto.setPreco(preco);
 
                 JOptionPane.showMessageDialog(null, "Preço do produto atualizado com sucesso!");
@@ -86,12 +135,20 @@ public class GerenciadorDeProdutos {
     public void deletarProduto() {
         String nomeMarca = JOptionPane.showInputDialog(null, "Informe a marca do produto que deseja excluir");
 
+        if (!validador.contemTexto(nomeMarca)) {
+            return;
+        }
+
         if (!marcas.containsKey(nomeMarca)) {
             JOptionPane.showMessageDialog(null, "Essa marca não existe!");
             return;
         }
 
         String nomeProduto = JOptionPane.showInputDialog(null, "Informe o nome do produto que deseja excluir");
+
+        if (!validador.contemTexto(nomeProduto)) {
+            return;
+        }
 
         Marca marcaDoProduto = marcas.get(nomeMarca);
         if (!marcaDoProduto.contemProduto(nomeProduto)) {
@@ -104,6 +161,10 @@ public class GerenciadorDeProdutos {
 
     public void buscarProduto() {
         String nomeProduto = JOptionPane.showInputDialog(null, "Informe o nome do produto que deseja buscar");
+
+        if (!validador.contemTexto(nomeProduto)) {
+            return;
+        }
 
         List<Produto> produtosEncontrados = new ArrayList<>();
         for (Marca marca : marcas.values()) {

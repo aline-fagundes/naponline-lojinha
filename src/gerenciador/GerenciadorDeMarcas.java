@@ -11,14 +11,20 @@ import java.util.Map;
 public class GerenciadorDeMarcas {
 
     public static final Map<String, Marca> marcas = new HashMap<>();
+    public Validacao validador = new Validacao();
 
     public void cadastrarMarca() {
         String nomeMarca = JOptionPane.showInputDialog(null, "Informe o nome da marca que deseja cadastrar");
+
+        if(!validador.contemTexto(nomeMarca)) {
+            return;
+        }
 
         if (marcas.containsKey(nomeMarca)) {
             JOptionPane.showMessageDialog(null, "Já existe uma marca com esse nome!");
             return;
         }
+
         Marca marca = new Marca(nomeMarca);
         marcas.put(nomeMarca, marca);
         JOptionPane.showMessageDialog(null, "Marca cadastrada com sucesso!");
@@ -28,12 +34,20 @@ public class GerenciadorDeMarcas {
     public void atualizarMarca() {
         String nomeMarca = JOptionPane.showInputDialog(null, "Informe o nome da marca que deseja atualizar");
 
+        if(!validador.contemTexto(nomeMarca)) {
+            return;
+        }
+
         if (!marcas.containsKey(nomeMarca)) {
             JOptionPane.showMessageDialog(null, "Essa marca não existe!");
             return;
         }
 
         String novoNomeMarca = JOptionPane.showInputDialog(null, "Informe um novo nome para essa marca");
+
+        if(!validador.contemTexto(novoNomeMarca)) {
+            return;
+        }
 
         if (marcas.containsKey(novoNomeMarca)) {
             JOptionPane.showMessageDialog(null, "Já existe uma marca com esse nome!");
@@ -50,6 +64,10 @@ public class GerenciadorDeMarcas {
 
     public void deletarMarca() {
         String nomeMarca = JOptionPane.showInputDialog(null, "Informe o nome da marca que deseja excluir");
+
+        if(!validador.contemTexto(nomeMarca)) {
+            return;
+        }
 
         if (!marcas.containsKey(nomeMarca)) {
             JOptionPane.showMessageDialog(null, "Essa marca não existe!");
@@ -68,10 +86,15 @@ public class GerenciadorDeMarcas {
     public void buscarMarca() {
         String nomeMarca = JOptionPane.showInputDialog(null, "Informe o nome da marca que deseja buscar");
 
+        if(!validador.contemTexto(nomeMarca)) {
+            return;
+        }
+
         if (!marcas.containsKey(nomeMarca)) {
             JOptionPane.showMessageDialog(null, "Essa marca não existe!");
             return;
         }
+
         Marca marcaEncontrada = marcas.get(nomeMarca);
         List<Produto> produtosDaMarca = marcaEncontrada.getProdutosDaMarca();
 
